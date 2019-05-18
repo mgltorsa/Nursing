@@ -1,0 +1,6 @@
+rest/target
+client/targe
+.vscode
+
+*.class
+*.jar
