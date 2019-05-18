@@ -1,7 +1,6 @@
 package com.nursing.client.demo;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,14 +18,14 @@ public class DemoDelegate {
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	public Car getCar(long id) {
+	public void getCar(long id) {
 		
 		String url = getUrlService();
 		System.out.println("url was-> "+url);
-		ResponseEntity<Car> entity = restTemplate.getForEntity(url+"/cars/1", Car.class);
-		Car car = entity.getBody();
+		// ResponseEntity<Car> entity = restTemplate.getForEntity(url+"/cars/1", Car.class);
+		// Car car = entity.getBody();
 		
-		return car;
+		// return car;
 	}
 
 	private String getUrlService() {
