@@ -15,7 +15,7 @@ public class Controller {
 	@Autowired
 	private IMedicineDao dao;
 	
-	@GetMapping(value = "/medicines")
+	@GetMapping(value = "/medicines",produces = "application/json")
 	public List<Medicine> getMedicines(){
 		return dao.findAll();
 	}
