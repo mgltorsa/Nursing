@@ -13,6 +13,13 @@ import com.nursing.rest.model.Medicine;
 @Repository
 public interface IMedicineDao extends JpaRepository<Medicine, Long> {
 
-
 	List<Medicine> findByContraIndications(String contraIndications);
+	
+	List<Medicine> findByName(String name);
+	
+	List<Medicine> findByGenericName(String geneticName);
+	
+	List<Medicine> findByLaboratory(String laboratory);
+	
+	List<Medicine> findByAdministrationType(String administrationType);
 }

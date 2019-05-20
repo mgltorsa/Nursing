@@ -15,12 +15,12 @@ public interface IMedicineService {
     public Medicine findById(Long id);
     public List<Medicine> findAll();
 	public List<Medicine> findByName(String name);
-	public List<Medicine> findByGenericName(String genericName);
 	public List<Medicine> findByLaboratory(String laboratory);
     public List<Medicine> findByAdministrationType(String administrationType);
     
     //NOTE: Punto 2b)
     public List<Medicine> findByQuantityLessThan(Long quantity);
+	List<Medicine> findByGenericName(String genericName);
 
     
 }

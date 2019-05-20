@@ -14,7 +14,7 @@ import lombok.ToString;
 /**
  * Entity implementation class for Entity: Medicine
  *
- */
+ */	
 @Entity
 @Table(name = "t_medicine")
 @NamedQuery(name = "Medicine.findAll", query = "SELECT t FROM Medicine t")
@@ -46,7 +46,7 @@ public class Medicine implements Serializable {
 	private String contraIndications;
 
 	@OneToMany(mappedBy = "medicine", orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<InventaryMedicine> inventaries = new ArrayList<>();
+	private List<InventoryMedicine> inventaries = new ArrayList<>();
 
 	@OneToMany(mappedBy = "medicine", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Supply> supplies = new ArrayList<>();

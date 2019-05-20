@@ -3,7 +3,7 @@ package com.nursing.rest.services;
 import java.util.List;
 
 
-import com.nursing.rest.dao.IInventaryDao;
+import com.nursing.rest.dao.IInventoryDao;
 import com.nursing.rest.model.*;
 
 
@@ -17,28 +17,28 @@ import org.springframework.stereotype.Service;
 public class InventaryService implements IInventaryService {
 
 	@Autowired
-	private IInventaryDao dao;
+	private IInventoryDao dao;
 
 	@Override
-	public void save(InventaryMedicine inventaryMedicine) {
+	public void save(InventoryMedicine inventaryMedicine) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public InventaryMedicine findById(Long id) {
+	public InventoryMedicine findById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<InventaryMedicine> findByMedicine(Long id) {
+	public List<InventoryMedicine> findByMedicine(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void delete(InventaryMedicine inventary) {
+	public void delete(InventoryMedicine inventary) {
 		// TODO Auto-generated method stub
 		
 	}

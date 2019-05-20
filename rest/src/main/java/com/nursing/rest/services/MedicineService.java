@@ -56,31 +56,31 @@ public class MedicineService implements IMedicineService {
 	@Override
 	public List<Medicine> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findAll();
 	}
 
 	@Override
 	public List<Medicine> findByName(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByName(name);
 	}
 
 	@Override
 	public List<Medicine> findByGenericName(String genericName) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByGenericName(genericName);
 	}
 
 	@Override
 	public List<Medicine> findByLaboratory(String laboratory) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByLaboratory(laboratory);
 	}
 
 	@Override
 	public List<Medicine> findByAdministrationType(String administrationType) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByAdministrationType(administrationType);
 	}
 
 	@Override

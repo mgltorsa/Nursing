@@ -22,8 +22,8 @@ import javax.persistence.JoinColumn;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Table(name = "t_inventary")
-@NamedQuery(name="InventaryMedicine.findAll", query="SELECT t FROM InventaryMedicine t")
-public class InventaryMedicine {
+@NamedQuery(name="InventaryMedicine.findAll", query="SELECT t FROM InventoryMedicine t")
+public class InventoryMedicine {
 
 
 	@Id
