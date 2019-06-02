@@ -3,36 +3,29 @@ package com.nursing.client.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
-import javax.persistence.OneToMany;
 
-@Entity
 @Data
 @NoArgsConstructor
 @ToString(exclude = "attentions")
-@Table(name = "t_patient")
-@NamedQuery(name="Patient.findAll", query="SELECT t FROM Patient t")
 public class Patient {
 
 	@NonNull
-	@Id
+	@NotBlank(message = "{field.error}")
 	private String document;
 
 	@NonNull
+	@NotBlank(message = "{field.error}")
 	private String names;
 
 	@NonNull
+	@NotBlank(message = "{field.error}")
 	private String lastnames;
 
 	private String academicProgram;
@@ -42,10 +35,8 @@ public class Patient {
 	private String state;
 	
 	
-	@OneToMany(fetch = FetchType.EAGER ,mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UrgencyAttention> attentions;
 
-	@OneToMany(fetch = FetchType.EAGER ,mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Supply> supplies;
 	
 	

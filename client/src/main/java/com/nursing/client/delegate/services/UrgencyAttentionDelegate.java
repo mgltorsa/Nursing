@@ -32,15 +32,13 @@ public class UrgencyAttentionDelegate implements IDelegateService<Long, UrgencyA
 	}
 
 	@Override
-	public UrgencyAttention update(UrgencyAttention entity) {
+	public void update(UrgencyAttention entity) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public UrgencyAttention delete(Long entity) {
+	public void delete(Long entity) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

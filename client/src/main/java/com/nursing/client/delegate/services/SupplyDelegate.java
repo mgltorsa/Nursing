@@ -32,15 +32,13 @@ public class SupplyDelegate implements IDelegateService<Long, Supply> {
 	}
 
 	@Override
-	public Supply update(Supply entity) {
+	public void update(Supply entity) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Supply delete(Long entity) {
+	public void delete(Long entity) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

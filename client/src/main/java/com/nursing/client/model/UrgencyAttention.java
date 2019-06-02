@@ -15,34 +15,36 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
-@Entity
 @NoArgsConstructor
-@Table(name = "t_urgency")
-@NamedQuery(name="UrgencyAttention.findAll", query="SELECT t FROM UrgencyAttention t")
 public class UrgencyAttention {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Urgency_IDUrgency_Generator")
-	@SequenceGenerator(name = "Urgency_IDUrgency_Generator", allocationSize = 1)
 	private Long consecutive;
 
 	@NonNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")  
+	@NotNull(message = "{date.error}")
 	private LocalDate date;
 
 	@NonNull
-	@ManyToOne(cascade = CascadeType.ALL)
+	@NotNull(message = "{field.error}")
 	private Patient patient;
 
 	@NonNull
+	@NotBlank(message = "{field.error}")
 	private String generalDescription;
 
 	@NonNull
+	@NotBlank(message = "{field.error}")
 	private String procedure;
 
 	@NonNull
@@ -50,7 +52,6 @@ public class UrgencyAttention {
 
 	private String forwardedPlace;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,mappedBy = "urgencyAttention",orphanRemoval = true)
 	private List<Supply> supplies;
 	
 	

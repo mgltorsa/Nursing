@@ -1,5 +1,6 @@
 package com.nursing.client.delegate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.nursing.client.delegate.services.IDelegateService;
+import com.nursing.client.model.Patient;
 
 @Component
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -21,9 +23,9 @@ public class Delegate {
 		return delegate.save(entity);
 	}
 	
-	public <T> T update(T entity, Class<T> clasz) {
+	public <T> void update(T entity, Class<T> clasz) {
 		IDelegateService<?, T> delegate = lookupService.lookupDelegateService(clasz);
-		return delegate.update(entity);
+		delegate.update(entity);
 	}
 	
 	public <T, K> T get(K id, Class<T> clasz) {
@@ -31,14 +33,21 @@ public class Delegate {
 		return delegate.get(id);
 	}
 	
-	public <T, K> T delete(K id, Class<T> clasz) {
+	public <T, K> void delete(K id, Class<T> clasz) {
 		IDelegateService<K, T> delegate = lookupService.lookupDelegateService(clasz);
-		return delegate.delete(id);
+		delegate.delete(id);
 	}
 	
 	public <T,K> List<T> getAll(Class<T> clasz){
+		if(clasz.equals(Patient.class)) {
+			Patient p = new Patient("2", "migueñ", "Torres");
+			List<Patient> pps = new ArrayList<>();
+			pps.add(p);
+			return (List<T>) pps;
+		}else {
 		IDelegateService<K, T> delegate = lookupService.lookupDelegateService(clasz);
 		return delegate.getAll();
+		}
 	}
 
 }

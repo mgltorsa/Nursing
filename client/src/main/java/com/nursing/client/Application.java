@@ -8,16 +8,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.client.RestTemplate;
 
-import com.nursing.client.demo.DemoDelegate;
 
 @SpringBootApplication
 public class Application {
 	
-	private static DemoDelegate delegate = new DemoDelegate();
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
-		delegate.getCar(1);
 	}
 	
 	@Bean

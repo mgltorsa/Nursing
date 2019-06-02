@@ -1,9 +1,14 @@
 package com.nursing.client.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 import lombok.NonNull;
@@ -14,45 +19,39 @@ import lombok.ToString;
  * Entity implementation class for Entity: Supply
  *
  */
-@Entity
-@Table(name = "t_supply")
-@NamedQuery(name="Supply.findAll", query="SELECT t FROM Supply t")
 @Data
-@ToString(exclude = {"patient","urgencyAttention"})
 @RequiredArgsConstructor
-public class Supply implements Serializable {
+public class Supply {
 
 	
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Supply_IDSupply_Generator")
-	@SequenceGenerator(name = "Supply_IDSupply_Generator", allocationSize = 1)
+	@NonNull
+	//TODO: Is generated in rest server?
 	private Long consecutive;
 
 	@NonNull
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "medicine_consecutive", referencedColumnName = "consecutive")
+	@NotNull(message="{field.error}")
 	private Medicine medicine;
 
 	@NonNull
+	@Min(value = 1, message = "{quantity.error}" )
 	private Integer quantity;
 
 	@NonNull
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "patient_document", referencedColumnName = "document")
+	@NotNull(message="{field.error}")
 	private Patient patient;
 
 	@NonNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")  
+	@Past
+	@NotNull(message="{date.error}")
 	private LocalDate date;
 
 	private String observations;
 
 	@NonNull
+	@NotBlank(message = "{field.error}")
 	private String pathology;
 	
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "urgencyAttention_consecutive", referencedColumnName = "consecutive")
 	private UrgencyAttention urgencyAttention;
 
 	

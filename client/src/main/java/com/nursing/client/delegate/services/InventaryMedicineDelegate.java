@@ -32,15 +32,13 @@ public class InventaryMedicineDelegate implements IDelegateService<Long, Inventa
 	}
 
 	@Override
-	public InventaryMedicine update(InventaryMedicine entity) {
+	public void update(InventaryMedicine entity) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public InventaryMedicine delete(Long entity) {
+	public void delete(Long entity) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
