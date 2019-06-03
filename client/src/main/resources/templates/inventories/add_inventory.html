@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="add_inventory.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <title>Inventory</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <form th:action="${addressRequest}" method="POST" th:object="${inventory}">
+                
+                <h1>
+                    <i class="fas fa-shipping-fast"></i> Inventory Details
+                </h1>
+                <div class="name">               
+                    <div>
+                        <label for="date">Date</label>
+                        <span class="warning_span" th:if="${#fields.hasErrors('expirationDate')}" th:errors="${inventory.expirationDate}"></span>
+                        <input type="date" name="date" th:field="${inventory.expirationDate}">
+                    </div>
+                </div>
+                <div class="street">
+                    <label for="medicine">Medicine <span class="warning_span" th:if="${#fields.hasErrors('medicine')}" th:errors="${inventory.medicine}"></span> </label>
+                    <select name="medicine" th:field="${inventory.medicine}">
+                        <option th:each="medicine : ${medicines}" th:value="${medicine.consecutive}" th:text="${''+medicine.consecutive+' - '+medicine.name}"></option>
+                    </select>
+                </div>
+
+                <div class="address-info">
+                    <div>
+                        <label for="quantity">Quantity <span class="warning_span" th:if="${quantityError != null}" th:text="${quantityError}"></span>
+                            <span class="warning_span" th:if="${#fields.hasErrors('availableQuantity')}" th:errors="${inventory.availableQuantity}"></span>
+                        </label>
+                        <input type="number" name="quantity" th:field="${inventory.availableQuantity}">
+                    </div>
+                </div>
+                <h1>
+                    <i class="far fa-credit-card"></i> Ubication
+                </h1>
+                <div class="cc-num">
+                    <label for="ubication">Type ubication  <span class="warning_span" th:if="${#fields.hasErrors('ubication')}" th:errors="${inventory.ubication}"></span></label>
+                    <input type="text" name="ubication" th:field="${inventory.ubication}">
+                </div>
+
+                <div class="btns">
+                    <input type="submit" name="action" value="Accept">
+                    <input type="submit" name="action" value="Cancel">
+                    <br>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

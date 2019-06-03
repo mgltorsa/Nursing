@@ -1,50 +1,118 @@
 package com.nursing.client.delegate.services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.nursing.client.model.InventaryMedicine;
+import com.nursing.client.model.InventoryMedicine;
+import com.nursing.client.model.wrappers.InventoryWrapper;
 
 @Component
 @Lazy
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class InventaryMedicineDelegate implements IDelegateService<Long, InventaryMedicine> {
+public class InventaryMedicineDelegate implements IDelegateService<Long, InventoryMedicine> {
 
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Value("${host}")
+	private String host;
+
+	@Value("${protocol}")
+	private String protocol;
+
+	@Value("${host_basepath}")
+	private String hostBasepath;
+
+	
 	@Override
-	public InventaryMedicine save(InventaryMedicine entity) {
-		// TODO Auto-generated method stub
+	public InventoryMedicine save(InventoryMedicine entity) {
+		
+		
+		InventoryWrapper wrapper = new InventoryWrapper(entity);
+		
+		URI url;
+		try {
+			url = new URI(url()+"/inventory?id="+entity.getMedicine().getConsecutive());
+			ResponseEntity<InventoryMedicine> response = restTemplate.postForEntity(url, wrapper, InventoryMedicine.class);
+			
+			if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+				throw new IllegalArgumentException();
+			}
+			return response.getBody();
+
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
-	public InventaryMedicine get(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public InventoryMedicine get(Long id) {
+		if(id==null) {
+			throw new IllegalArgumentException("id was null");
+		}
+		ResponseEntity<InventoryMedicine> response = restTemplate.getForEntity(url()+"/inventories", InventoryMedicine.class,id);
+		
+		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+			throw new IllegalStateException("precondition failed, object already exists");
+		}
+		return response.getBody();
 	}
 
 	@Override
-	public void update(InventaryMedicine entity) {
-		// TODO Auto-generated method stub
+	public void update(InventoryMedicine entity) {
+		if(entity.getId()==null) {
+			throw new IllegalArgumentException();
+		}
+		restTemplate.put(url()+"/inventory",entity);
 	}
 
 	@Override
-	public void delete(Long entity) {
-		// TODO Auto-generated method stub
+	public void delete(Long id) {
+
+		if(id==null) {
+			throw new IllegalArgumentException();
+		}
+		URI url;
+		try {
+			url = new URI(url()+"/inventory?id="+id);
+			restTemplate.delete(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public List<InventaryMedicine> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<InventoryMedicine> getAll() {
+		ResponseEntity<List<InventoryMedicine>> response = restTemplate.exchange(
+				  url()+"/inventories",
+				  HttpMethod.GET,
+				  null,
+				  new ParameterizedTypeReference<List<InventoryMedicine>>(){});
+		List<InventoryMedicine> inventories = response.getBody();
+		
+		return inventories;
 	}
+	
+	private String url() {
 
+		return protocol + "://" + host + "/" + hostBasepath;
+	}
+	
 }
+

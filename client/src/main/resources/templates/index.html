@@ -20,46 +20,28 @@
 
 
             <!-- card -->
-            <a th:href="@{/add-supply}" class="card">
+            <a th:href="@{/add-inventory}" class="card">
 
                 <div class="icon">
                     <i class="material-icons md-36">add_shopping_cart</i>
                 </div>
                 </input>
-                <p class="title">Supply</p>
-                <p class="text">Click to create a supply.</p>
+                <p class="title">Inventory</p>
+                <p class="text">Click to add inventory to Medicine</p>
 
             </a>
 
             <!-- card -->
-            <a th:href="@{/attend}" class="card">
+            <a th:href="@{/inventories}" class="card">
 
                 <div class="icon">
                     <i class="material-icons md-36">local_hospital</i>
                 </div>
                 </input>
-                <p class="title">Urgency</p>
-                <p class="text">Click to attend patient.</p>
-
+                <p class="title">Inventories</p>
+                <p class="text">Click to view all inventories.</p>
             </a>
-            <!-- end card -->
-            <!-- card -->
-            <a th:href="@{/consultByDate?type=attention}" class="card">
-
-                <div class="icon"><i class="material-icons md-36">person</i></div>
-                <p class="title">Consult attention</p>
-                <p class="text">Check attentions</p>
-
-            </a>
-            <!-- end card -->
-            <!-- card -->
-            <a th:href="@{/consultByDate?type=supply}" class="card">
-
-                <div class="icon"><i class="material-icons md-36">local_shipping</i></div>
-                <p class="title">Consult supplies</p>
-                <p class="text">Check supplies</p>
-
-            </a>
+           
             <!-- end card -->
             <form th:action="@{/logout}" method="POST" class="card">
                 <div class="icon"><i class="material-icons md-36">error</i></div>

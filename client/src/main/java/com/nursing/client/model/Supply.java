@@ -2,7 +2,6 @@ package com.nursing.client.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,9 +10,9 @@ import javax.validation.constraints.Past;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 /**
  * Entity implementation class for Entity: Supply
@@ -21,10 +20,10 @@ import lombok.ToString;
  */
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Supply {
 
 	
-	@NonNull
 	//TODO: Is generated in rest server?
 	private Long consecutive;
 
@@ -53,30 +52,4 @@ public class Supply {
 	private String pathology;
 	
 	private UrgencyAttention urgencyAttention;
-
-	
-	public Supply() {
-		super();
-	}
-
-      
-	public String getObservations() {
-		return observations;
-	}
-
-
-	public void setObservations(String observations) {
-		this.observations = observations;
-	}
-
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-   
 }

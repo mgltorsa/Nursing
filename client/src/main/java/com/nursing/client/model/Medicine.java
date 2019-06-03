@@ -1,56 +1,68 @@
 package com.nursing.client.model;
 
-import java.io.Serializable;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.boot.jackson.JsonComponent;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 /**
  * Entity implementation class for Entity: Medicine
  *
  */
 @Data
-@ToString(exclude = { "inventaries", "supplies" })
 @RequiredArgsConstructor
-public class Medicine implements Serializable {
+@NoArgsConstructor
+@JsonComponent
+public class Medicine {
 
-	private static final long serialVersionUID = 1L;
 
 	@NonNull
+	@JsonProperty
 	private Long consecutive;
 
 	@NonNull
 	@NotBlank
+	@JsonProperty
 	private String name;
 
 	@NonNull
 	@NotBlank
+	@JsonProperty
 	private String genericName;
 
 	@NonNull
 	@NotBlank
+	@JsonProperty
 	private String laboratory;
 
+	@JsonProperty
 	private String administrationType;
 
 	@NonNull
 	@NotBlank
+	@JsonProperty
 	private String indications;
 
+	@JsonProperty
 	private String contraIndications;
-
-	private List<InventaryMedicine> inventaries = new ArrayList<>();
+	
+	private List<InventoryMedicine> inventaries = new ArrayList<>();
 
 	private List<Supply> supplies = new ArrayList<>();
+	
 
-	public Medicine() {
-		super();
-	}
+
 
 }

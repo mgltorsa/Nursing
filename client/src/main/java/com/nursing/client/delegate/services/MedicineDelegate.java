@@ -1,8 +1,5 @@
 package com.nursing.client.delegate.services;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +9,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nursing.client.model.Medicine;
 
 @Component
@@ -39,24 +35,42 @@ public class MedicineDelegate implements IDelegateService<Long, Medicine> {
 
 	@Override
 	public Medicine save(Medicine entity) {
-		// TODO Auto-generated method stub
-		return null;
+		if(entity==null) {
+			throw new IllegalArgumentException("entity was null");
+		}
+		ResponseEntity<Medicine> response =  restTemplate.postForEntity(url()+"/medicine", entity, Medicine.class);
+		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+			throw new IllegalArgumentException("entity already exists");
+		}
+		return response.getBody();
 	}
 
 	@Override
 	public Medicine get(Long id) {
-		ResponseEntity<Medicine> response = restTemplate.getForEntity(url()+"/medicines/"+id, Medicine.class);
+		if(id==null) {
+			throw new IllegalArgumentException("id was null");
+		}
+		ResponseEntity<Medicine> response = restTemplate.getForEntity(url()+"/medicines", Medicine.class,id);
+		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+			throw new IllegalArgumentException("medicine doesn't exists");
+		}
 		return response.getBody();
 	}
 
 	@Override
 	public void update(Medicine entity) {
-		// TODO Auto-generated method stub
+		if(entity.getConsecutive()==null) {
+			throw new IllegalArgumentException("consecutive was null");
+		}
+		restTemplate.put(url()+"/medicine", entity);
 	}
 
 	@Override
-	public void delete(Long entity) {
-		// TODO Auto-generated method stub
+	public void delete(Long id) {
+		if(id==null) {
+			throw new IllegalArgumentException("id was null");
+		}
+		restTemplate.delete(url()+"/medicine",id);
 	}
 
 	@Override

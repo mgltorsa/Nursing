@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="consult.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <title>Consults</title>
+</head>
+
+<body>
+
+    <div class="info_container">
+        <p th:if="${inventories == null or inventories.isEmpty()}"> No hay resultados</p>
+        <table th:if="${inventories !=null and !inventories.isEmpty()}" class="table table-striped table-ligth">
+            <thead>
+                <tr class="table-light">
+
+                    <th>Id</th>
+                    <th>Medicine</th>
+                    <th>AvailableQuantity</th>
+                    <th>ubication</th>
+                    <th>expirationDate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="inventory : ${inventories}">
+                    <td>
+                        <a th:text="${inventory.id}"></a>
+                    </td>
+                    <td th:if="${inventory.medicine != null}" th:text="${''+inventory.getMedicine().getConsecutive()+' - '+inventory.getMedicine().getName()}"></td>
+                    <td th:if="${inventory.medicine == null}">Error</td>
+                    <td th:text="${inventory.availableQuantity}"></td>
+                    <td th:text="${inventory.ubication}"></td>
+                    <td th:text="${inventory.expirationDate}"></td>
+                    <td><a th:href="${'/delete?id='+inventory.id}">Borrar</a> </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="btns">
+            <a th:href="@{/}"><i class="material-icons md-36 ">home</i></a>
+        </div>
+    </div>
+
+
+
+    <!--<div class="credits__container">
+        <p class="credits__text">Background color: Pantone Color of the Year 2016 <a href="https://www.pantone.com/color-of-the-year-2016" class="credits__link">Rose Quartz</a></p>
+    </div> -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script src="consult.js"></script>
+</body>
+
+</html>
