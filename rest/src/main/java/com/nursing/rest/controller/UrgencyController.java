@@ -15,6 +15,9 @@ import com.nursing.rest.model.Patient;
 import com.nursing.rest.model.UrgencyAttention;
 import com.nursing.rest.services.IUrgencyService;
 
+
+import com.nursing.rest.dao.IUrgencyAttentionDao;
+
 @RestController
 public class UrgencyController {
 
@@ -65,4 +68,5 @@ public class UrgencyController {
 //	public List<Patient> getAtentionsMoreThanLastMonth(Long quantity){
 //		return service.findByAttentionsMoreThanLastMonth(quantity);
 //	}
+
 }

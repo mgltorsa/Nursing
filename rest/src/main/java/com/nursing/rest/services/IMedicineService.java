@@ -28,4 +28,5 @@ public interface IMedicineService {
 	List<Medicine> findByGenericName(String genericName);
 
     
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nursing.rest.model.Supply;
 import com.nursing.rest.services.ISupplyService;
 
+
 @RestController
 public class SupplyController {
 	
@@ -73,4 +74,5 @@ public class SupplyController {
 	public List<Supply> getSupplyByQuantityRange(Long urgencyId) {
 		return supplyService.findByUrgency(urgencyId);
 	}
+
 }
