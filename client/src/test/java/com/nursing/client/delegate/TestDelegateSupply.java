@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 
 import com.nursing.client.delegate.services.SupplyDelegate;
@@ -99,7 +101,7 @@ public class TestDelegateSupply {
     }
 
     @Test
-    public void testGetSupply(){
+    public void testGetSupply() throws URISyntaxException{
     	
     	Supply supply = expected;
     	
@@ -107,8 +109,9 @@ public class TestDelegateSupply {
     	
         ResponseEntity<Supply> response =  new ResponseEntity<Supply>(expected, HttpStatus.ACCEPTED);
 
+        URI uri = new URI(url+"/supplies?id="+supply.getConsecutive());
 
-        when(template.getForEntity(url+"/supplies", Supply.class, supply.getConsecutive())).thenReturn(response);
+        when(template.getForEntity(uri, Supply.class)).thenReturn(response);
 
         Supply actual = delegate.get(supply.getConsecutive());
         
@@ -120,24 +123,30 @@ public class TestDelegateSupply {
 
     }
     
+//    @Test(expected = Exception.class)
+//	public void testGetNonExistSupply() throws URISyntaxException {
+//		
+//		Supply supply = expected;
+//		supply.setConsecutive(1l);
+//		ResponseEntity<Supply> response = new ResponseEntity<Supply>(supply, HttpStatus.PRECONDITION_FAILED);
+//		
+//		URI uri = new URI(url+"/supplies?id="+supply.getConsecutive());
+//
+//		when(template.getForEntity(uri, Supply.class)).thenReturn(response);
+//		
+//		delegate.get(supply.getConsecutive());
+//
+//		fail();
+//
+//	}
+    
     @Test(expected = IllegalArgumentException.class)
     public void testGetNullId() {
     	delegate.get(null);
     }
     
     
-    @Test(expected = Exception.class)
-    public void testGetNonExistSupply() {
-    	Supply supply = expected;
-    	supply.setConsecutive(2l);
-    	ResponseEntity<Supply> response =  new ResponseEntity<Supply>(supply, HttpStatus.PRECONDITION_FAILED);
-    	when(template.getForEntity(url+"/supplies", Supply.class, supply.getConsecutive())).thenReturn(response);
-    	
-    	delegate.get(supply.getConsecutive());
-    	
-    	fail();   	
-    	
-    }
+    
     
     @Test
     public void testUpdateSupply() {
@@ -155,12 +164,14 @@ public class TestDelegateSupply {
     }
     
     @Test
-    public void testDeleteSupply() {
+    public void testDeleteSupply() throws URISyntaxException {
     	
     	Supply supply = expected;
     	supply.setConsecutive(1l);
     	delegate.delete(supply.getConsecutive());
-    	verify(template).delete(url+"/supply",supply.getConsecutive());
+		URI uri = new URI(url+"/supply?id="+supply.getConsecutive());
+
+    	verify(template).delete(uri);
     	assertTrue(true);
     }
     

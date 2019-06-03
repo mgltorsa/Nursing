@@ -1,5 +1,7 @@
 package com.nursing.client.delegate.services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 
@@ -52,13 +54,21 @@ public class UrgencyAttentionDelegate implements IDelegateService<Long, UrgencyA
 		if(id==null) {
 			throw new IllegalArgumentException("id was null");
 		}
-		ResponseEntity<UrgencyAttention> response = restTemplate.getForEntity(url() + "/urgencies",
-				UrgencyAttention.class, id);
 		
-		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
-			throw new IllegalStateException("attentiond doesn't exists");
+		try {
+			URI uri = new URI(url()+"/urgencies?id="+id);
+			ResponseEntity<UrgencyAttention> response = restTemplate.getForEntity(uri, UrgencyAttention.class);
+			
+			if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+				throw new IllegalStateException("attentiond doesn't exists");
+			}
+			return response.getBody();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return response.getBody();
+		
+		return null;
 	}
 
 	@Override
@@ -74,7 +84,14 @@ public class UrgencyAttentionDelegate implements IDelegateService<Long, UrgencyA
 		if(id==null) {
 			throw new IllegalArgumentException("id was null");
 		}
-		restTemplate.delete(url() + "/urgency", id);
+		URI uri;
+		try {
+			uri = new URI(url()+"/urgency?id=id");
+			restTemplate.delete(uri);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

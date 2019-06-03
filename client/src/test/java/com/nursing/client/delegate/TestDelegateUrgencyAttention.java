@@ -7,6 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 
 import org.junit.Before;
@@ -93,14 +95,15 @@ public class TestDelegateUrgencyAttention {
 	}
 
 	@Test
-	public void testGetUrgencyAttention() {
+	public void testGetUrgencyAttention() throws URISyntaxException {
 
 		ResponseEntity<UrgencyAttention> response = new ResponseEntity<UrgencyAttention>(expected, HttpStatus.ACCEPTED);
 
 
 		UrgencyAttention ur = expected;
 		ur.setConsecutive(1l);
-		when(template.getForEntity(url + "/urgencies", UrgencyAttention.class, ur.getConsecutive())).thenReturn(response);
+		URI uri = new URI(url+"/urgencies?id="+ur.getConsecutive());
+		when(template.getForEntity(uri, UrgencyAttention.class)).thenReturn(response);
 		
 		UrgencyAttention actual = delegate.get(ur.getConsecutive());
 
@@ -114,12 +117,15 @@ public class TestDelegateUrgencyAttention {
 	}
 
 	@Test(expected = Exception.class)
-	public void testGetNonExistUrgencyAttention() {
+	public void testGetNonExistUrgencyAttention() throws URISyntaxException {
 		
 		UrgencyAttention ur = expected;
 		ur.setConsecutive(1l);
 		ResponseEntity<UrgencyAttention> response = new ResponseEntity<UrgencyAttention>(expected, HttpStatus.PRECONDITION_FAILED);
-		when(template.getForEntity(url + "/urgencies", UrgencyAttention.class, expected.getConsecutive())).thenReturn(response);
+		
+		URI uri = new URI(url+"/urgencies?id="+ur.getConsecutive());
+
+		when(template.getForEntity(uri, UrgencyAttention.class)).thenReturn(response);
 		delegate.get(ur.getConsecutive());
 
 		fail();
@@ -149,12 +155,14 @@ public class TestDelegateUrgencyAttention {
 	}
 
 	@Test
-	public void testDeleteUrgencyAttention() {
+	public void testDeleteUrgencyAttention() throws URISyntaxException {
 
 		UrgencyAttention ur = expected;
 		ur.setConsecutive(1l);
+		URI uri = new URI(url+"/urgency?id=id");
+
 		delegate.delete(ur.getConsecutive());
-		verify(template).delete(url + "/urgency", ur.getConsecutive());
+		verify(template).delete(uri);
 		assertTrue(true);
 	}
 

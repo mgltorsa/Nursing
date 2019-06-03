@@ -7,6 +7,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,11 +89,13 @@ public class TestDelegatePatient {
 	}
 
 	@Test
-	public void testGetPatient() {
+	public void testGetPatient() throws URISyntaxException {
 
 		ResponseEntity<Patient> response = new ResponseEntity<Patient>(expected, HttpStatus.ACCEPTED);
 
-		when(template.getForEntity(url + "/patients", Patient.class, expected.getDocument())).thenReturn(response);
+		URI uri = new URI(url+"/patients?document="+expected.getDocument());
+
+		when(template.getForEntity(uri, Patient.class)).thenReturn(response);
 
 		Patient actual = delegate.get(expected.getDocument());
 
@@ -105,10 +110,13 @@ public class TestDelegatePatient {
 	}
 
 	@Test(expected = Exception.class)
-	public void testGetNonExistPatient() {
+	public void testGetNonExistPatient() throws URISyntaxException {
 		
 		ResponseEntity<Patient> response = new ResponseEntity<Patient>(expected, HttpStatus.PRECONDITION_FAILED);
-		when(template.getForEntity(url + "/patients", Patient.class, expected.getDocument())).thenReturn(response);
+		
+		URI uri = new URI(url+"/patients?document="+expected.getDocument());
+
+		when(template.getForEntity(uri, Patient.class)).thenReturn(response);
 
 		delegate.get(expected.getDocument());
 
@@ -137,11 +145,13 @@ public class TestDelegatePatient {
 	}
 
 	@Test
-	public void testDeletePatient() {
+	public void testDeletePatient() throws URISyntaxException {
 
 		Patient patient = expected;
 		delegate.delete(patient.getDocument());
-		verify(template).delete(url + "/patient", patient.getDocument());
+		URI uri = new URI(url+"/patient?id="+patient.getDocument());
+
+		verify(template).delete(uri);
 		assertTrue(true);
 	}
 

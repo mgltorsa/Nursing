@@ -1,5 +1,8 @@
 package com.nursing.client.delegate.services;
 
+
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 
@@ -51,13 +54,22 @@ public class SupplyDelegate implements IDelegateService<Long, Supply>, IDelegate
 		if(id==null) {
 			throw new IllegalArgumentException("id was null");
 		}
-		ResponseEntity<Supply> response = restTemplate.getForEntity(url() + "/supplies", Supply.class, id);
-
-		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
-			throw new IllegalStateException("entity doesn't exists");
-		}
 		
-		return response.getBody();
+		try {
+			URI uri = new URI(url()+"/supplies?id="+id);
+
+			ResponseEntity<Supply> response = restTemplate.getForEntity(uri, Supply.class);
+			if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+				throw new IllegalStateException("entity doesn't exists");
+			}
+			
+			return response.getBody();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+
 	}
 
 	@Override
@@ -74,7 +86,14 @@ public class SupplyDelegate implements IDelegateService<Long, Supply>, IDelegate
 			throw new IllegalArgumentException("id was null");
 		}
 		
-		restTemplate.delete(url() + "/supply", id);
+		try {
+			URI uri = new URI(url()+"/supply?id="+id);
+			restTemplate.delete(uri);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

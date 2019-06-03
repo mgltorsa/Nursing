@@ -1,5 +1,7 @@
 package com.nursing.client.delegate.services;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +52,19 @@ public class PatientDelegate implements IDelegateService<String, Patient>{
 		if(id==null) {
 			throw new IllegalArgumentException("id was null");
 		}
-		ResponseEntity<Patient> response = restTemplate.getForEntity(url()+"/patients", Patient.class, id);
-		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
-			throw new IllegalArgumentException();
+		try {
+			URI uri = new URI(url()+"/patients?document="+id);
+			ResponseEntity<Patient> response = restTemplate.getForEntity(uri, Patient.class);
+			if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+				throw new IllegalArgumentException();
+			}
+			Patient patient = response.getBody();
+			return patient;
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		Patient patient = response.getBody();
-		return patient;
+		return null;
 	}
 
 	@Override
@@ -71,7 +80,14 @@ public class PatientDelegate implements IDelegateService<String, Patient>{
 		if(id==null) {
 			throw new IllegalArgumentException("id was null");
 		}
-		restTemplate.delete(url()+"/patient",id);
+		try {
+			URI uri = new URI(url()+"/patient?id="+id);
+			restTemplate.delete(uri);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

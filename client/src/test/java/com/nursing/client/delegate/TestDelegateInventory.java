@@ -27,7 +27,6 @@ import org.springframework.web.client.RestTemplate;
 import com.nursing.client.delegate.services.InventaryMedicineDelegate;
 import com.nursing.client.model.InventoryMedicine;
 import com.nursing.client.model.Medicine;
-import com.nursing.client.model.wrappers.InventoryWrapper;
 
 /**
  * TestDelegateMedicine
@@ -57,7 +56,7 @@ public class TestDelegateInventory {
 		ReflectionTestUtils.setField(delegate, "hostBasepath", "api");
 
 		medicine = new Medicine(1l, "name", "genericName", "laboratory", "indications");
-		expected = new InventoryMedicine(10, "ubication", LocalDate.now());
+		expected = new InventoryMedicine(medicine, 10, "ubication", LocalDate.now());
 		expected.setMedicine(medicine);
 
 		url = "https://nursing-rest.herokuapp.com/api";
@@ -68,10 +67,9 @@ public class TestDelegateInventory {
 
 		ResponseEntity<InventoryMedicine> response = new ResponseEntity<InventoryMedicine>(expected, HttpStatus.ACCEPTED);
 
-		URI uri = new URI(url + "/inventory?id="+medicine.getConsecutive());
-		InventoryWrapper wrapper = new InventoryWrapper(expected);
+		URI uri = new URI(url + "/inventory");
 
-		when(template.postForEntity(uri, wrapper, InventoryMedicine.class)).thenReturn(response);
+		when(template.postForEntity(uri, expected, InventoryMedicine.class)).thenReturn(response);
 
 		InventoryMedicine actual = delegate.save(expected);
 
@@ -88,11 +86,9 @@ public class TestDelegateInventory {
 
 		ResponseEntity<InventoryMedicine> response = new ResponseEntity<InventoryMedicine>(expected, HttpStatus.PRECONDITION_FAILED);
 
-		InventoryWrapper wrapper = new InventoryWrapper(expected);
+		URI uri = new URI(url+"/inventory");
 
-		URI uri = new URI(url+"/inventory?id="+expected.getMedicine().getConsecutive());
-
-		when(template.postForEntity(uri, wrapper, InventoryMedicine.class)).thenReturn(response);
+		when(template.postForEntity(uri, expected, InventoryMedicine.class)).thenReturn(response);
 
 		delegate.save(expected);
 
@@ -101,16 +97,17 @@ public class TestDelegateInventory {
 	}
 
 	@Test
-	public void testGetInventory() {
+	public void testGetInventory() throws URISyntaxException {
 
 		
 		InventoryMedicine inventory = expected;
 		inventory.setId(1l);
 		
+		URI uri = new URI(url+"/inventories?id="+inventory.getId());
 
 		ResponseEntity<InventoryMedicine> response = new ResponseEntity<InventoryMedicine>(inventory, HttpStatus.ACCEPTED);
 
-		when(template.getForEntity(url + "/inventories", InventoryMedicine.class, inventory.getId())).thenReturn(response);
+		when(template.getForEntity(uri, InventoryMedicine.class)).thenReturn(response);
 
 		InventoryMedicine actual = delegate.get(inventory.getId());
 
@@ -123,12 +120,14 @@ public class TestDelegateInventory {
 	}
 
 	@Test(expected = Exception.class)
-	public void testGetNonExistInventory() {
+	public void testGetNonExistInventory() throws URISyntaxException {
 		
 		InventoryMedicine inventory = expected;
 		inventory.setId(1l);
+		URI uri = new URI(url+"/inventories?id="+inventory.getId());
+
 		ResponseEntity<InventoryMedicine> response = new ResponseEntity<InventoryMedicine>(inventory, HttpStatus.PRECONDITION_FAILED);
-		when(template.getForEntity(url + "/inventories", InventoryMedicine.class, inventory.getId())).thenReturn(response);
+		when(template.getForEntity(uri, InventoryMedicine.class)).thenReturn(response);
 
 		delegate.get(inventory.getId());
 

@@ -7,6 +7,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,11 +89,13 @@ public class TestDelegateMedicine {
 	}
 
 	@Test
-	public void testGetMedicine() {
+	public void testGetMedicine() throws URISyntaxException {
 
 		ResponseEntity<Medicine> response = new ResponseEntity<Medicine>(expected, HttpStatus.ACCEPTED);
 
-		when(template.getForEntity(url + "/medicines", Medicine.class, expected.getConsecutive())).thenReturn(response);
+		URI uri = new URI(url+"/medicines?id="+expected.getConsecutive());
+
+		when(template.getForEntity(uri, Medicine.class)).thenReturn(response);
 
 		Medicine actual = delegate.get(expected.getConsecutive());
 
@@ -105,10 +110,13 @@ public class TestDelegateMedicine {
 	}
 
 	@Test(expected = Exception.class)
-	public void testGetNonExistMedicine() {
+	public void testGetNonExistMedicine() throws URISyntaxException {
 		
 		ResponseEntity<Medicine> response = new ResponseEntity<Medicine>(expected, HttpStatus.PRECONDITION_FAILED);
-		when(template.getForEntity(url + "/medicines", Medicine.class, expected.getConsecutive())).thenReturn(response);
+		
+		URI uri = new URI(url+"/medicines?id="+expected.getConsecutive());
+
+		when(template.getForEntity(uri, Medicine.class)).thenReturn(response);
 
 		delegate.get(expected.getConsecutive());
 

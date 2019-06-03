@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.nursing.client.model.InventoryMedicine;
-import com.nursing.client.model.wrappers.InventoryWrapper;
 
 @Component
 @Lazy
@@ -41,12 +40,11 @@ public class InventaryMedicineDelegate implements IDelegateService<Long, Invento
 	public InventoryMedicine save(InventoryMedicine entity) {
 		
 		
-		InventoryWrapper wrapper = new InventoryWrapper(entity);
 		
 		URI url;
 		try {
-			url = new URI(url()+"/inventory?id="+entity.getMedicine().getConsecutive());
-			ResponseEntity<InventoryMedicine> response = restTemplate.postForEntity(url, wrapper, InventoryMedicine.class);
+			url = new URI(url()+"/inventory");
+			ResponseEntity<InventoryMedicine> response = restTemplate.postForEntity(url, entity, InventoryMedicine.class);
 			
 			if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
 				throw new IllegalArgumentException();
@@ -65,18 +63,26 @@ public class InventaryMedicineDelegate implements IDelegateService<Long, Invento
 		if(id==null) {
 			throw new IllegalArgumentException("id was null");
 		}
-		ResponseEntity<InventoryMedicine> response = restTemplate.getForEntity(url()+"/inventories", InventoryMedicine.class,id);
 		
-		if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
-			throw new IllegalStateException("precondition failed, object already exists");
+		try {
+			URI uri = new URI(url()+"/inventories?id="+id);
+			ResponseEntity<InventoryMedicine> response = restTemplate.getForEntity(uri, InventoryMedicine.class);
+			
+			if(response.getStatusCode()==HttpStatus.PRECONDITION_FAILED) {
+				throw new IllegalStateException("precondition failed, object already exists");
+			}
+			return response.getBody();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return response.getBody();
+		return null;
 	}
 
 	@Override
 	public void update(InventoryMedicine entity) {
 		if(entity.getId()==null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("id was null");
 		}
 		restTemplate.put(url()+"/inventory",entity);
 	}

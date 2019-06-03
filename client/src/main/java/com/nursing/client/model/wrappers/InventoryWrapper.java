@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nursing.client.delegate.Delegate;
 import com.nursing.client.model.InventoryMedicine;
 import com.nursing.client.model.Medicine;
@@ -27,7 +26,7 @@ public class InventoryWrapper {
 	private Long id;
 	
 	@NonNull
-	@JsonIgnore
+	@NotNull
 	private Long medicine;
 
 	@NonNull
@@ -39,12 +38,13 @@ public class InventoryWrapper {
 	private String ubication;
 
 	@NonNull
-	@Future(message = "{futuredate.error}")
-	@NotNull(message = "{date.error}")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Future(message = "{future.date.error}")
+	@NotNull
 	private LocalDate expirationDate;
 	
 	public InventoryWrapper(InventoryMedicine inventory) {
+		this.id=inventory.getId();
 		this.medicine=inventory.getMedicine().getConsecutive();
 		availableQuantity=inventory.getAvailableQuantity();
 		ubication=inventory.getUbication();
@@ -53,11 +53,13 @@ public class InventoryWrapper {
 	
 	public InventoryMedicine get(Delegate delegate) {
 		
-		Medicine medicine = new Medicine();
-		medicine.setConsecutive(this.medicine);
-		InventoryMedicine inv = new InventoryMedicine(availableQuantity, ubication, expirationDate);
-		inv.setMedicine(medicine);
-		return inv;
+//		Medicine medicine = new Medicine();
+//		medicine.setConsecutive(this.medicine);
+//		InventoryMedicine inv = new InventoryMedicine(availableQuantity, ubication, expirationDate);
+//		inv.setMedicine(medicine);
+		InventoryMedicine inventory = new InventoryMedicine(delegate.get(medicine, Medicine.class), availableQuantity, ubication, expirationDate);
+		inventory.setId(id);
+		return inventory;
 	}
 	
 

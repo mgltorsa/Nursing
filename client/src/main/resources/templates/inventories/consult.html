@@ -35,6 +35,7 @@
                     <td th:text="${inventory.availableQuantity}"></td>
                     <td th:text="${inventory.ubication}"></td>
                     <td th:text="${inventory.expirationDate}"></td>
+                    <td><a th:href="${'/edit-inventory?id='+inventory.id}">Editar</a></td>
                     <td><a th:href="${'/delete?id='+inventory.id}">Borrar</a> </td>
                 </tr>
 

@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,8 @@ public class InventoryMedicine {
 
 	private Long id;
 	
+	//If not work, remvoe NonNull
+	@NonNull
 	private Medicine medicine;
 
 	@NonNull
