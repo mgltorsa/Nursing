@@ -3,6 +3,7 @@ package com.nursing.rest.services.impl;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nursing.rest.dao.IInventoryDao;
+import com.nursing.rest.dao.IMedicineDao;
 import com.nursing.rest.model.InventoryMedicine;
 import com.nursing.rest.model.Medicine;
 import com.nursing.rest.services.IInventoryService;
@@ -20,6 +22,9 @@ public class InventoryService implements IInventoryService{
 	
 	@Autowired
 	private IInventoryDao inventory;
+	
+	@Autowired
+	private IMedicineDao medicine;
 
 	@Override
 	public InventoryMedicine save(InventoryMedicine inventaryMedicine) {
@@ -51,13 +56,18 @@ public class InventoryService implements IInventoryService{
 	@Override
 	public InventoryMedicine findById(Long id) {
 		// TODO Auto-generated method stub
-		return inventory.getOne(id);
+		Optional<InventoryMedicine> opt = inventory.findById(id);
+		if(opt.isPresent()) {
+			return opt.get();
+		}else {
+			return null;
+		}
 	}
 
 	@Override
 	public List<InventoryMedicine> findMedicineInventories(Long medicineId) {
 		// TODO Auto-generated method stub
-		return inventory.getMedicineSupplies(medicineId);
+		return inventory.findByMedicine(medicine.findByConsecutive(medicineId));
 	}
 
 	@Override

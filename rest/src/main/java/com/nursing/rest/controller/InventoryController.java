@@ -42,6 +42,11 @@ public class InventoryController {
 		inventoryService.save(inventory);
 		return inventoryService.findById(inventory.getId());
 	}
+	
+	@GetMapping(value="/api/inventories", params="id")
+	public InventoryMedicine getInventory(Long id) {
+		return inventoryService.findById(id);
+	}
 
 
 	@PutMapping(value = "/api/inventory")
@@ -64,7 +69,7 @@ public class InventoryController {
 	//CRUD
 	//------------------------------------------------------------
 
-	@GetMapping(value = "/api/inventories", params = "medicineId")
+	@GetMapping(value = "/api/inventoriesByMedicine", params = "medicineId")
 	public List<InventoryMedicine> getMedicineInventories(Long medicineId){
 		return inventoryService.findMedicineInventories(medicineId);
 	}

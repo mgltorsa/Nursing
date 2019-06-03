@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nursing.rest.dao.IPatientDao;
-import com.nursing.rest.model.Medicine;
 import com.nursing.rest.model.Patient;
 import com.nursing.rest.services.IPatientService;
 
@@ -33,6 +31,11 @@ public class PatientController {
 	@PutMapping(value = "/api/patient")
 	public Patient updateEntity(@RequestBody Patient patient) {
 		return patientService.update(patient);
+	}
+	
+	@GetMapping(value="/api/patients", params="document")
+	public Patient getPatient(String document) {
+		return patientService.findByDocument(document);
 	}
 
 	@DeleteMapping(value = "/api/patient", params = "id")

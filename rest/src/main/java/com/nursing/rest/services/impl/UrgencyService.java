@@ -6,6 +6,7 @@ import java.time.temporal.Temporal;
 import java.time.temporal.TemporalUnit;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -63,7 +64,12 @@ public class UrgencyService implements IUrgencyService {
 	@Override
 	public UrgencyAttention findById(Long id) {
 		// TODO Auto-generated method stub
-		return dao.getOne(id);
+		Optional<UrgencyAttention> opt = dao.findById(id);
+		if(opt.isPresent()) {
+			return opt.get();
+		}else {
+			return null;
+		}
 	}
 
 	@Override

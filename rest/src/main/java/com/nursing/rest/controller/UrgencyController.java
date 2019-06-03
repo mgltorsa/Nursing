@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -32,6 +33,12 @@ public class UrgencyController {
 	public UrgencyAttention saveUrgency(@RequestBody UrgencyAttention urgencyAttention){
 		return service.save(urgencyAttention);
 	}
+	
+	@GetMapping(value = "/api/urgencies", params = "id")
+	public UrgencyAttention getUrgencyAttention(Long id) {
+		return service.findById(id);
+	}
+
 
 	@PutMapping(value = "/api/urgency")
 	public UrgencyAttention updateUrgency(@RequestBody UrgencyAttention urgencyAttention){
