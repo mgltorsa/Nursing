@@ -1,11 +1,15 @@
-package com.nursing.rest.services;
+package com.nursing.rest.services.impl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import com.nursing.rest.dao.IMedicineDao;
 import com.nursing.rest.model.*;
+import com.nursing.rest.services.IInventoryService;
+import com.nursing.rest.services.IMedicineService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +23,11 @@ public class MedicineService implements IMedicineService {
 	@Autowired
 	private IMedicineDao dao;
 
+	@Autowired
+	private IInventoryService inventory;
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		Medicine m = new Medicine(1l, "name-1", "genericName-1", "laboratory-1", "indications-1");
 		Medicine m2 = new Medicine(2l, "name-2", "genericName-2", "laboratory-2", "indications-2");
 		Medicine m3 = new Medicine(3l, "name-3", "genericName-3", "laboratory-3", "indications-3");
@@ -33,61 +40,72 @@ public class MedicineService implements IMedicineService {
 		dao.save(m4);
 		dao.save(m5);
 
+		InventoryMedicine im = new InventoryMedicine(m, 10, "Hospital", LocalDate.now());
+		inventory.save(im);
 	}
 
 	@Override
-	public void saveOrUpdate(Medicine medicine) {
+	public Medicine save(Medicine medicine) {
 		// TODO Auto-generated method stub
-		
+		return dao.save(medicine);
 	}
 
 	@Override
 	public void delete(Medicine medicine) {
 		// TODO Auto-generated method stub
-		
+		dao.delete(medicine);
+	}
+
+	@Override
+	public Medicine update(Medicine medicine) {
+		// TODO Auto-generated method stub
+		Medicine m = dao.findById(medicine.getConsecutive()).get();
+		if (m != null) {
+			m.setName(medicine.getName());
+			m.setGenericName(medicine.getGenericName());
+			m.setLaboratory(medicine.getLaboratory());
+			m.setAdministrationType(medicine.getAdministrationType());
+			m.setIndications(medicine.getIndications());
+			m.setContraIndications(medicine.getContraIndications());
+			return dao.save(m);
+		} else
+			return null;
 	}
 
 	@Override
 	public Medicine findById(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByConsecutive(id);
 	}
 
 	@Override
 	public List<Medicine> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findAll();
 	}
 
 	@Override
 	public List<Medicine> findByName(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByName(name);
 	}
 
 	@Override
 	public List<Medicine> findByGenericName(String genericName) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByGenericName(genericName);
 	}
 
 	@Override
 	public List<Medicine> findByLaboratory(String laboratory) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByLaboratory(laboratory);
 	}
 
 	@Override
 	public List<Medicine> findByAdministrationType(String administrationType) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.findByAdministrationType(administrationType);
 	}
 
-	@Override
-	public List<Medicine> findByQuantityLessThan(Long quantity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 }

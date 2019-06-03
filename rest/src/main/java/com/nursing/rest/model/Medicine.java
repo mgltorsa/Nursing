@@ -1,12 +1,14 @@
 package com.nursing.rest.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -14,16 +16,15 @@ import lombok.ToString;
 /**
  * Entity implementation class for Entity: Medicine
  *
- */
+ */	
 @Entity
 @Table(name = "t_medicine")
 @NamedQuery(name = "Medicine.findAll", query = "SELECT t FROM Medicine t")
 @Data
 @ToString(exclude = { "inventaries", "supplies" })
 @RequiredArgsConstructor
-public class Medicine implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+@NoArgsConstructor
+public class Medicine {
 
 	@Id
 	@NonNull
@@ -46,13 +47,12 @@ public class Medicine implements Serializable {
 	private String contraIndications;
 
 	@OneToMany(mappedBy = "medicine", orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<InventaryMedicine> inventaries = new ArrayList<>();
+	@JsonIgnore
+	private List<InventoryMedicine> inventaries = new ArrayList<>();
 
 	@OneToMany(mappedBy = "medicine", orphanRemoval = true, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<Supply> supplies = new ArrayList<>();
 
-	public Medicine() {
-		super();
-	}
 
 }

@@ -10,12 +10,20 @@ import com.nursing.rest.model.*;
  */
 public interface IUrgencyService {
 
-    public void saveOrUpdate(UrgencyAttention urgencyAttention);
-	public List<UrgencyAttention> findAll();
-	public List<UrgencyAttention> findByPatient(String document);
+	public UrgencyAttention save(UrgencyAttention urgencyAttention);
+
+	public UrgencyAttention update(UrgencyAttention urgencyAttention);
+
 	public void delete(UrgencyAttention urgency);
+
 	public UrgencyAttention findById(Long id);
 
-	//NOTE: Punto 2b)
+	public List<UrgencyAttention> findAll();
+
+	public List<UrgencyAttention> findByPatient(String document);
+
 	public List<UrgencyAttention> findBetweenDates(LocalDate since, LocalDate until);
+
+//	public List<Patient> findByAttentionsMoreThanLastMonth(Long quantity);
+	
 }

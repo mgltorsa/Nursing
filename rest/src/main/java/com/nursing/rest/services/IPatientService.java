@@ -11,22 +11,23 @@ import org.springframework.data.util.Pair;
  */
 public interface IPatientService {
 
-	public void saveOrUpdate(Patient patient);
+	public Patient save(Patient patient);
+	
+	public Patient update(Patient patient);
 
 	public void delete(Patient patient);
 
 	public List<Patient> findAll();
 
 	// NOTE: Punto 1a)
-	public List<Patient> findByName(String names);
+	public List<Patient> findAllByName(String names);
 
-	public List<Patient> findByLastName(String lastnames);
+	public List<Patient> findAllByLastName(String lastnames);
+	
+	public List<Pair<Patient, Integer>> findAllPatientsByDocument();
 
 	public Patient findByDocument(String document);
 
 	// NOTE: Punto 2a)
-	public List<Pair<Patient, Integer>> findAllPatientsByDocument();
 
-	// NOTE: Punto 2c)
-	public List<Patient> findByAttentionsMoreThanLastMonth(Long quantity);
 }

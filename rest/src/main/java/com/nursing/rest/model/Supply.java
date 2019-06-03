@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class Supply implements Serializable {
 	@NonNull
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "medicine_consecutive", referencedColumnName = "consecutive")
+	@JsonIgnore
 	private Medicine medicine;
 
 	@NonNull
@@ -41,6 +44,7 @@ public class Supply implements Serializable {
 	@NonNull
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "patient_document", referencedColumnName = "document")
+	@JsonIgnore
 	private Patient patient;
 
 	@NonNull
@@ -53,28 +57,24 @@ public class Supply implements Serializable {
 	
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "urgencyAttention_consecutive", referencedColumnName = "consecutive")
+	@JsonIgnore
 	private UrgencyAttention urgencyAttention;
-
 	
 	public Supply() {
 		super();
 	}
 
-      
 	public String getObservations() {
 		return observations;
 	}
-
 
 	public void setObservations(String observations) {
 		this.observations = observations;
 	}
 
-
 	public int getQuantity() {
 		return quantity;
 	}
-
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;

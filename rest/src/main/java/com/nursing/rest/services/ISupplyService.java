@@ -9,14 +9,28 @@ import com.nursing.rest.model.*;
  */
 public interface ISupplyService {
 
-    public void saveOrUpdate(Supply supply);
+    public Supply save(Supply supply);
+    
+    public Supply update(Supply supply);
+    
 	public void delete(Supply supply);
-	public List<Supply> findByMedicineName(String name);	
+	
+	public List<Supply> findByMedicineName(String name);
+	
 	public Supply findById(Long consecutive);
-
-	//NOTE: Punto 1c)
-	public List<Supply> findByQuantityRange(int minimum, int maximum);
+	
 	public List<Supply> findAll();
-	public void deleteAll();
+	
+	public List<Supply> findByQuantityRange(int minimum, int maximum);
+	
+	public List<Supply> findMedicineSupplies(Long id);
+	
+	public List<Supply> findByPatientName(String patientName);
+
+	public List<Supply> findByPatient(String patientDocument);
+
+	public List<Supply> findByUrgency(Long patientDocument);
+	
+	public List<Supply> findByQuantityLessThan(Long quantity);
     
 }
